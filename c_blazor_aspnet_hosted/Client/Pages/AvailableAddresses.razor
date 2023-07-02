@@ -1,0 +1,47 @@
+﻿@page "/tasks-available"
+@using c_blazor_aspnet_hosted.Shared
+@inject HttpClient Http
+
+<PageTitle>@PageName</PageTitle>
+
+<h1>@PageName</h1>
+
+<p>This component demonstrates fetching tasks from the server.</p>
+
+@if (addresses == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var adress in addresses)
+            {
+                <tr>
+                    <td>@adress.Id</td>
+                    <td>@adress.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private string PageName = "Adresses Available";
+    private AddressDto[]? addresses;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        addresses = await Http.GetFromJsonAsync<AddressDto[]>("api/Address");
+    }
+}
+
